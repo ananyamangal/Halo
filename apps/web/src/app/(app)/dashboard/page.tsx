@@ -59,6 +59,113 @@ export default function DashboardPage() {
 
       {dashboardQuery.isError && <ErrorState onRetry={() => dashboardQuery.refetch()} />}
 
+      {/* AI Command Center */}
+      <div className="overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/[0.07] via-card to-card shadow-card">
+        <div className="flex flex-col gap-4 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+              <Bot className="h-6 w-6" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-semibold tracking-tight text-foreground">
+                  AI Command Center
+                </h2>
+                <Badge variant="success">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-60" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-current" />
+                  </span>
+                  Live
+                </Badge>
+              </div>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                Aria, Vault and Cipher are running {activeWorkflows} workflow
+                {activeWorkflows === 1 ? "" : "s"} right now.
+              </p>
+            </div>
+          </div>
+          <Button asChild size="lg" className="gap-2 shadow-sm">
+            <Link href="/ai-center">
+              <Bot className="h-5 w-5" /> Go to AI Center
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="grid gap-4 p-5 md:grid-cols-3">
+          {agents.length === 0
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-44 animate-pulse rounded-xl border border-border bg-muted/40" />
+              ))
+            : agents.map((agent, i) => {
+                const Icon = AGENT_ICON[agent.key] ?? Bot;
+                return (
+                  <motion.div
+                    key={agent.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06, duration: 0.35 }}
+                    whileHover={{ y: -3 }}
+                  >
+                    <Link
+                      href="/ai-center"
+                      className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-elevated"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                            <Icon className="h-5 w-5" />
+                          </span>
+                          <div>
+                            <p className="text-sm font-semibold text-foreground">{agent.name}</p>
+                            <p className="text-xs text-muted-foreground">{agent.domain}</p>
+                          </div>
+                        </div>
+                        <StatusBadge status={agent.status} />
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <ProgressRing
+                          value={Math.round(agent.confidence * 100)}
+                          size={56}
+                          strokeWidth={6}
+                        />
+                        <div className="flex-1 space-y-1.5 text-xs">
+                          <div className="flex items-center justify-between">
+                            <span className="text-muted-foreground">Running tasks</span>
+                            <span className="font-semibold text-foreground">{agent.runningTasks}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-muted-foreground">Queued</span>
+                            <span className="font-semibold text-foreground">
+                              {agent.queuedDecisions}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-muted-foreground">Success rate</span>
+                            <span className="font-semibold text-foreground">
+                              {agent.successRatePct}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-auto rounded-lg bg-muted/50 p-2.5">
+                        <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                          Current workflow
+                        </p>
+                        <p className="mt-0.5 truncate text-xs font-medium text-foreground">
+                          {agent.currentWorkflow ?? "Idle — monitoring"}
+                        </p>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+        </div>
+      </div>
+
       {/* KPI row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         <StatCard
@@ -168,113 +275,6 @@ export default function DashboardPage() {
             ))}
           </div>
         </SectionCard>
-      </div>
-
-      {/* AI Command Center */}
-      <div className="overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/[0.07] via-card to-card shadow-card">
-        <div className="flex flex-col gap-4 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-              <Bot className="h-6 w-6" />
-            </span>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold tracking-tight text-foreground">
-                  AI Command Center
-                </h2>
-                <Badge variant="success">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-60" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-current" />
-                  </span>
-                  Live
-                </Badge>
-              </div>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                Aria, Vault and Cipher are running {activeWorkflows} workflow
-                {activeWorkflows === 1 ? "" : "s"} right now.
-              </p>
-            </div>
-          </div>
-          <Button asChild size="lg" className="gap-2 shadow-sm">
-            <Link href="/ai-center">
-              <Bot className="h-5 w-5" /> Go to AI Center
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
-        </div>
-
-        <div className="grid gap-4 p-5 md:grid-cols-3">
-          {agents.length === 0
-            ? Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-44 animate-pulse rounded-xl border border-border bg-muted/40" />
-              ))
-            : agents.map((agent, i) => {
-                const Icon = AGENT_ICON[agent.key] ?? Bot;
-                return (
-                  <motion.div
-                    key={agent.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.06, duration: 0.35 }}
-                    whileHover={{ y: -3 }}
-                  >
-                    <Link
-                      href="/ai-center"
-                      className="flex h-full flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-elevated"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                            <Icon className="h-5 w-5" />
-                          </span>
-                          <div>
-                            <p className="text-sm font-semibold text-foreground">{agent.name}</p>
-                            <p className="text-xs text-muted-foreground">{agent.domain}</p>
-                          </div>
-                        </div>
-                        <StatusBadge status={agent.status} />
-                      </div>
-
-                      <div className="flex items-center gap-4">
-                        <ProgressRing
-                          value={Math.round(agent.confidence * 100)}
-                          size={56}
-                          strokeWidth={6}
-                        />
-                        <div className="flex-1 space-y-1.5 text-xs">
-                          <div className="flex items-center justify-between">
-                            <span className="text-muted-foreground">Running tasks</span>
-                            <span className="font-semibold text-foreground">{agent.runningTasks}</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-muted-foreground">Queued</span>
-                            <span className="font-semibold text-foreground">
-                              {agent.queuedDecisions}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-muted-foreground">Success rate</span>
-                            <span className="font-semibold text-foreground">
-                              {agent.successRatePct}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-auto rounded-lg bg-muted/50 p-2.5">
-                        <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                          Current workflow
-                        </p>
-                        <p className="mt-0.5 truncate text-xs font-medium text-foreground">
-                          {agent.currentWorkflow ?? "Idle — monitoring"}
-                        </p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-        </div>
       </div>
 
       {/* AI + activity row */}
