@@ -1,4 +1,6 @@
 import { authStore, type AuthUser } from "@/lib/store/auth-store";
+import { USE_MOCK } from "@/lib/config";
+import { mockApi, mockLogin, mockMe } from "@/lib/mock/server";
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
@@ -90,6 +92,10 @@ async function tryReauth(): Promise<string | null> {
 export async function apiFetch<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = "GET", body, params, auth = true, _retried = false } = options;
 
+  if (USE_MOCK) {
+    return (await mockApi(path, { method, params, body })) as T;
+  }
+
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (auth) {
     const token = authStore.getState().accessToken;
@@ -123,6 +129,8 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
 
 /** POST /auth/login — OAuth2 form-urlencoded body. */
 export async function loginRequest(email: string, password: string): Promise<TokenEnvelope> {
+  if (USE_MOCK) return mockLogin();
+
   const form = new URLSearchParams();
   form.append("username", email);
   form.append("password", password);
@@ -141,6 +149,8 @@ export async function loginRequest(email: string, password: string): Promise<Tok
 
 /** POST /auth/refresh — JSON body. */
 export async function refreshRequest(refreshToken: string): Promise<TokenEnvelope> {
+  if (USE_MOCK) return mockLogin();
+
   const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -154,6 +164,8 @@ export async function refreshRequest(refreshToken: string): Promise<TokenEnvelop
 
 /** GET /auth/me — returns snake_case; map it to the frontend AuthUser shape. */
 export async function meRequest(): Promise<AuthUser> {
+  if (USE_MOCK) return mockMe();
+
   const me = await apiFetch<{
     id: string;
     email: string;
