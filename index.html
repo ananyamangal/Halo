@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SummitBridge Health Plan — Medical Cost & Utilization Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brandline">
+      <div class="mck-mark">McKinsey&nbsp;&amp;&nbsp;Company<small>Case Championship · TechQuest</small></div>
+    </div>
+    <h1 class="app-title">SummitBridge Health Plan</h1>
+    <div class="app-sub">Medical Cost &amp; Utilization Dashboard — bending the cost curve on high-cost claimants, avoidable care &amp; retention</div>
+    <div class="app-meta">
+      <div>Analysis period: <b>FY 2024</b></div>
+      <div>Cost metric: <b>Allowed amount</b></div>
+      <div id="metaExposure">&nbsp;</div>
+    </div>
+  </header>
+
+  <div class="filterbar">
+    <div class="filter-row">
+      <div class="fgroup"><label>Product line (LOB)</label><div class="pills" id="f-lob"></div></div>
+      <div class="fgroup"><label>State</label><div class="pills" id="f-state"></div></div>
+      <div class="fgroup"><label>Age band</label><div class="pills" id="f-age"></div></div>
+      <div class="fgroup"><label>Service category</label><div class="pills" id="f-cat"></div></div>
+      <div class="fgroup"><label>Network</label><div class="pills" id="f-net"></div></div>
+      <div class="fgroup"><label>Cohort</label>
+        <div class="pills">
+          <button class="toggle" id="f-highcost"><span class="dot"></span> High-cost (top 5%) only</button>
+        </div>
+      </div>
+      <div class="filter-actions">
+        <div class="result-note" id="resultNote">&nbsp;</div>
+        <button class="btn-reset" id="btnReset">Reset filters</button>
+      </div>
+    </div>
+    <div class="fgroup" style="margin-top:12px">
+      <label>Month (FY2024) — click to isolate, click again to clear</label>
+      <div class="pills" id="f-month"></div>
+    </div>
+  </div>
+
+  <main>
+    <!-- KPI ROW -->
+    <div class="kpi-grid" id="kpis"></div>
+
+    <!-- COST STRUCTURE -->
+    <div class="section-title"><span class="tag">01</span> Cost structure &amp; drivers <span class="rule"></span></div>
+    <div class="grid g-2-1">
+      <div class="card">
+        <h3>Allowed spend by service category</h3>
+        <div class="c-sub">Click a bar to filter the whole dashboard by that category</div>
+        <div class="chart" id="chartCat"></div>
+      </div>
+      <div class="card">
+        <h3>Specialty Rx by therapeutic class</h3>
+        <div class="c-sub">Where the pharmacy spend concentrates</div>
+        <div class="chart" id="chartSrx"></div>
+      </div>
+    </div>
+    <div class="grid g-2" style="margin-top:14px">
+      <div class="card">
+        <h3>Spend &amp; PMPM by product line</h3>
+        <div class="c-sub">Allowed (bars) vs blended PMPM (line)</div>
+        <div class="chart" id="chartLob"></div>
+      </div>
+      <div class="card">
+        <h3>Monthly trend — allowed &amp; PMPM</h3>
+        <div class="c-sub">Seasonality and per-member cost trajectory</div>
+        <div class="chart" id="chartTrend"></div>
+      </div>
+    </div>
+
+    <!-- HIGH-COST -->
+    <div class="section-title"><span class="tag">02</span> High-cost claimant concentration <span class="rule"></span></div>
+    <div class="grid g-2-1">
+      <div class="card">
+        <h3>Concentration curve (Lorenz)</h3>
+        <div class="c-sub">Cumulative share of allowed spend by members ranked highest-cost first</div>
+        <div class="chart tall" id="chartLorenz"></div>
+      </div>
+      <div class="card">
+        <h3>Where high-cost spend goes</h3>
+        <div class="c-sub">Service mix for the top-5% cohort</div>
+        <div class="chart tall" id="chartHcMix"></div>
+      </div>
+    </div>
+
+    <!-- AVOIDABLE -->
+    <div class="section-title"><span class="tag">03</span> Avoidable &amp; potentially avoidable utilization <span class="rule"></span></div>
+    <div class="grid g-3">
+      <div class="card">
+        <h3>ED visits by avoidability</h3>
+        <div class="c-sub">ICD-10 classification · click to filter</div>
+        <div class="chart" id="chartEd"></div>
+      </div>
+      <div class="card">
+        <h3>ED visits / 1,000 by age band</h3>
+        <div class="c-sub">Utilization intensity across cohorts</div>
+        <div class="chart" id="chartEdAge"></div>
+      </div>
+      <div class="card">
+        <h3>Behavioral health — volume vs unit cost</h3>
+        <div class="c-sub">Low spend: driven by volume or price?</div>
+        <div class="chart" id="chartBh"></div>
+      </div>
+    </div>
+
+    <!-- NETWORK & RETENTION -->
+    <div class="section-title"><span class="tag">04</span> Network leakage &amp; member retention <span class="rule"></span></div>
+    <div class="grid g-3">
+      <div class="card">
+        <h3>Out-of-network leakage by state</h3>
+        <div class="c-sub">OON allowed share — balance-billing &amp; cost risk</div>
+        <div class="chart" id="chartOon"></div>
+      </div>
+      <div class="card">
+        <h3>Disenrollment reasons</h3>
+        <div class="c-sub">Why commercial &amp; ACA members churn</div>
+        <div class="chart" id="chartChurn"></div>
+      </div>
+      <div class="card">
+        <h3>PCP quality vs member PMPM</h3>
+        <div class="c-sub">Do lower-quality PCP panels cost more?</div>
+        <div class="chart" id="chartQuality"></div>
+      </div>
+    </div>
+
+    <!-- SCENARIOS -->
+    <div class="section-title"><span class="tag">05</span> Savings scenario modeler <span class="rule"></span></div>
+    <div class="scenario">
+      <div class="controls">
+        <div class="ctrl">
+          <label>Specialty pharmacy allowed reduction <b id="lblSrx">10%</b></label>
+          <input type="range" id="slSrx" min="0" max="25" step="1" value="10" />
+          <div class="quick" data-target="slSrx"><button data-v="5">5%</button><button data-v="10">10%</button><button data-v="15">15%</button></div>
+        </div>
+        <div class="ctrl">
+          <label>Avoidable ED visits shifted to urgent care <b id="lblEd">20%</b></label>
+          <input type="range" id="slEd" min="0" max="60" step="5" value="20" />
+          <div class="quick" data-target="slEd"><button data-v="20">20%</button><button data-v="40">40%</button></div>
+        </div>
+        <div class="hint">
+          Modeled on the <b>current filter selection</b>. Specialty savings = specialty allowed × reduction.
+          ED-shift savings = shifted avoidable visits × (avg allowed per ED − avg allowed per urgent-care visit).
+        </div>
+      </div>
+      <div>
+        <div class="savings-head">
+          <div class="savings-stat"><div class="s-label">Modeled annual savings</div><div class="s-value" id="svTotal">—</div><div class="s-sub" id="svPct">&nbsp;</div></div>
+          <div class="savings-stat alt"><div class="s-label">Specialty Rx savings</div><div class="s-value" id="svSrx">—</div><div class="s-sub" id="svSrxSub">&nbsp;</div></div>
+          <div class="savings-stat alt"><div class="s-label">ED site-of-care savings</div><div class="s-value" id="svEd">—</div><div class="s-sub" id="svEdSub">&nbsp;</div></div>
+        </div>
+        <div class="card">
+          <h3>Allowed spend bridge — baseline to optimized</h3>
+          <div class="chart" id="chartWaterfall"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BENCHMARKS -->
+    <div class="section-title"><span class="tag">06</span> Validation vs national benchmarks <span class="rule"></span></div>
+    <div class="card">
+      <table class="bench" id="benchTable"><thead><tr><th>Theme</th><th>SummitBridge (our data)</th><th>National benchmark</th><th>Implication</th></tr></thead><tbody></tbody></table>
+      <div class="hint">Sources: AHRQ, CDC/NCHS, CMS, MedPAC (per case workbook “External Benchmarks”).</div>
+    </div>
+  </main>
+
+  <footer>
+    <b>Definitions.</b> PMPM = total allowed ÷ member-months. ED visits/1,000 = (ED claims ÷ member-months) × 1,000.
+    High-cost = top 5% of members by allowed spend in FY2024 (threshold <span id="ftHcThr"></span>). OON rate = out-of-network claim lines ÷ total lines.
+    &nbsp;·&nbsp; PMPM and per-1,000 denominators use member-month exposure for the selected population; category/network/avoidability filters affect spend and counts only, not the exposure base.
+    &nbsp;·&nbsp; Source: SummitBridge case workbook (claims, member_months, enrollment, providers, avoidable_ed_reference). All figures computed live in-browser.
+  </footer>
+
+  <script src="vendor/echarts.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
