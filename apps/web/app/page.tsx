@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import Chart from "@/components/Chart";
 import {
@@ -111,6 +112,10 @@ export default function Page() {
   return (
     <>
       <header className="app-header">
+        <Link href="/member" className="role-switch" aria-label="Switch to Member Portal">
+          <span className="rs-icon">👤</span> Customer Login — Switch to Member Portal
+          <span className="rs-arrow">→</span>
+        </Link>
         <div className="brandline">
           <div className="mck-mark">
             McKinsey&nbsp;&amp;&nbsp;Company

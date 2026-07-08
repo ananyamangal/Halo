@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./member.css";
 
 export const metadata: Metadata = {
   title: "SummitBridge Health Plan — Medical Cost Dashboard",
