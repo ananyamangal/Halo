@@ -7,10 +7,17 @@ import { useMember } from "@/lib/member/store";
 import { withDistance, generateSlots, initials } from "@/lib/member/providers";
 import type { AppointmentType } from "@/lib/member/types";
 import BookingModal from "@/components/member/BookingModal";
+import Icon from "@/components/member/Icon";
 
-function stars(q: number) {
+function Stars({ q }: { q: number }) {
   const full = Math.round(q);
-  return "★".repeat(full) + "☆".repeat(Math.max(0, 5 - full));
+  return (
+    <>
+      {Array.from({ length: 5 }, (_, i) => (
+        <Icon key={i} name={i < full ? "starFilled" : "star"} size={15} />
+      ))}
+    </>
+  );
 }
 
 export default function ProviderProfilePage() {
@@ -32,9 +39,9 @@ export default function ProviderProfilePage() {
   if (!provider) {
     return (
       <>
-        <Link href="/member/providers" className="mp-btn ghost sm">← Back to providers</Link>
+        <Link href="/member/providers" className="mp-btn ghost sm" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={15} /> Back to providers</Link>
         <div className="empty">
-          <div className="em-ic">🤷</div>
+          <div className="em-ic"><Icon name="info" size={30} /></div>
           <p>We couldn&apos;t find that provider.</p>
           <Link href="/member/providers" className="mp-btn primary sm">Browse providers</Link>
         </div>
@@ -47,8 +54,8 @@ export default function ProviderProfilePage() {
 
   return (
     <>
-      <Link href="/member/providers" className="mp-btn ghost sm" style={{ marginBottom: 12 }}>
-        ← Back to providers
+      <Link href="/member/providers" className="mp-btn ghost sm" style={{ marginBottom: 12, display: "inline-flex", alignItems: "center", gap: 6 }}>
+        <Icon name="arrowLeft" size={15} /> Back to providers
       </Link>
 
       <div className="mp-card">
@@ -59,12 +66,12 @@ export default function ProviderProfilePage() {
             <div className="prov-spec" style={{ fontSize: 14 }}>{p.specialty} · {p.type}</div>
             <div style={{ marginTop: 8, display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
               {p.inNetwork
-                ? <span className="mp-badge b-green">✓ In-Network</span>
+                ? <span className="mp-badge b-green" style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><Icon name="check" size={13} /> In-Network</span>
                 : <span className="mp-badge b-red">Out-of-Network</span>}
               {p.acceptingNew
                 ? <span className="mp-badge b-teal">Accepting patients</span>
                 : <span className="mp-badge b-grey">Not accepting</span>}
-              <span className="stars">{stars(p.quality)}</span>
+              <span className="stars" style={{ display: "inline-flex", alignItems: "center", gap: 2 }}><Stars q={p.quality} /></span>
               <span style={{ fontSize: 13, color: "var(--muted)" }}>{p.quality.toFixed(1)} quality</span>
             </div>
           </div>
@@ -75,19 +82,19 @@ export default function ProviderProfilePage() {
         <div className="mp-card">
           <h3>Contact information</h3>
           <div className="prov-meta" style={{ marginTop: 10 }}>
-            <div>📞 {p.phone}</div>
-            <div>📍 {address}</div>
-            {p.distanceMi != null && <div>🚗 {p.distanceMi} mi from your home</div>}
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="phone" size={16} /> {p.phone}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="pin" size={16} /> {address}</div>
+            {p.distanceMi != null && <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="car" size={16} /> {p.distanceMi} mi from your home</div>}
           </div>
         </div>
 
         <div className="mp-card">
           <h3>About</h3>
           <div className="prov-meta" style={{ marginTop: 10 }}>
-            <div>🏥 Provider type: {p.type}</div>
-            <div>👥 Panel size: {p.panel.toLocaleString("en-US")} patients</div>
-            <div>⭐ Quality score: {p.quality.toFixed(1)} / 5</div>
-            <div>🛡️ Network: {p.network}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="stethoscope" size={16} /> Provider type: {p.type}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="user" size={16} /> Panel size: {p.panel.toLocaleString("en-US")} patients</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="starFilled" size={16} /> Quality score: {p.quality.toFixed(1)} / 5</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Icon name="shield" size={16} /> Network: {p.network}</div>
           </div>
           <div style={{ marginTop: 12 }}>
             <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 6 }}>Accepted insurance</div>
@@ -113,11 +120,11 @@ export default function ProviderProfilePage() {
           ))}
         </div>
         <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-          <button className="mp-btn primary" onClick={() => setModalType("in-person")}>
-            🩺 Book appointment
+          <button className="mp-btn primary" onClick={() => setModalType("in-person")} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <Icon name="stethoscope" size={16} /> Book appointment
           </button>
-          <button className="mp-btn blue" onClick={() => setModalType("virtual")}>
-            💻 Book virtual visit
+          <button className="mp-btn blue" onClick={() => setModalType("virtual")} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <Icon name="monitor" size={16} /> Book virtual visit
           </button>
         </div>
       </div>

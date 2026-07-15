@@ -8,6 +8,7 @@ import { withDistance, filterProviders, specialties, states } from "@/lib/member
 import type { CareRecommendation, Provider } from "@/lib/member/types";
 import ProviderCard from "@/components/member/ProviderCard";
 import BookingModal from "@/components/member/BookingModal";
+import Icon from "@/components/member/Icon";
 
 const SUPPORT_TEL = "1-800-786-648";
 
@@ -92,7 +93,7 @@ export default function FindCarePage() {
               className={"symptom" + (selectedKey === s.key ? " sel" : "")}
               onClick={() => { setText(""); runRecommendation(s.key, s.key); }}
             >
-              <span className="sy-ic">{s.icon}</span>
+              <span className="sy-ic"><Icon name={s.icon} size={26} /></span>
               {s.label}
             </button>
           ))}
@@ -143,7 +144,7 @@ export default function FindCarePage() {
 
           {rec.emergency ? (
             <div className="mp-card" style={{ marginTop: 16, borderColor: "var(--red)", background: "#fdeaea" }}>
-              <h3 style={{ color: "var(--red)" }}>🚨 Call 911 or go to the nearest Emergency Department</h3>
+              <h3 style={{ color: "var(--red)", display: "flex", alignItems: "center", gap: 8 }}><Icon name="ambulance" size={22} /> Call 911 or go to the nearest Emergency Department</h3>
               <p style={{ margin: "6px 0 0", color: "var(--ink)" }}>
                 In an emergency, don&apos;t wait and don&apos;t book an appointment. Get help immediately —
                 call 911 or head to the closest ED now.
@@ -204,7 +205,7 @@ export default function FindCarePage() {
               {(rec.setting === "Virtual Consultation" || rec.telehealthOK) && (
                 <div className="help-cta" style={{ marginBottom: 14 }}>
                   <div style={{ flex: 1 }}>
-                    <b>💻 This can likely be handled by video</b>
+                    <b style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><Icon name="monitor" size={18} /> This can likely be handled by video</b>
                     <div style={{ color: "var(--muted)", fontSize: 13.5 }}>
                       Skip the trip — a virtual visit is faster and often cheaper.
                     </div>
@@ -215,7 +216,7 @@ export default function FindCarePage() {
 
               {nearby.length === 0 ? (
                 <div className="empty">
-                  <div className="em-ic">🔍</div>
+                  <div className="em-ic"><Icon name="compass" size={30} /></div>
                   <p>No in-network providers match your filters. Try widening your search.</p>
                 </div>
               ) : (
@@ -237,14 +238,14 @@ export default function FindCarePage() {
 
       {/* Feature 2 — benefits help */}
       <div className="help-cta" style={{ marginTop: 24 }}>
-        <div style={{ fontSize: 34 }}>🛡️</div>
+        <div style={{ fontSize: 34 }}><Icon name="shield" size={34} /></div>
         <div style={{ flex: 1 }}>
           <b>Need help understanding your benefits?</b>
           <div style={{ color: "var(--muted)", fontSize: 13.5 }}>
             Our team can walk you through copays, deductibles, and what&apos;s covered.
           </div>
         </div>
-        <a href={`tel:${SUPPORT_TEL}`} className="mp-btn primary">📞 Call Customer Support</a>
+        <a href={`tel:${SUPPORT_TEL}`} className="mp-btn primary" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><Icon name="phone" size={16} /> Call Customer Support</a>
         <Link href="/member/benefits" className="mp-btn outline">View Plan Benefits</Link>
       </div>
 

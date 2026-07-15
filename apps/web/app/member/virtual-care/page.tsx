@@ -6,6 +6,7 @@ import { withDistance, filterProviders } from "@/lib/member/providers";
 import type { Provider } from "@/lib/member/types";
 import ProviderCard from "@/components/member/ProviderCard";
 import BookingModal from "@/components/member/BookingModal";
+import Icon from "@/components/member/Icon";
 
 const TELEHEALTH_SPECIALTIES = ["Family Medicine", "Internal Medicine", "Urgent Care"];
 
@@ -53,7 +54,7 @@ export default function VirtualCarePage() {
 
       {telehealthProviders.length === 0 ? (
         <div className="empty">
-          <div className="em-ic">💻</div>
+          <div className="em-ic"><Icon name="monitor" size={30} /></div>
           <p>No telehealth-capable in-network providers are available right now.</p>
         </div>
       ) : (

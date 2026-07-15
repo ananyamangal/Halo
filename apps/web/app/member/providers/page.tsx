@@ -6,6 +6,7 @@ import { withDistance, filterProviders, specialties, states } from "@/lib/member
 import type { Provider } from "@/lib/member/types";
 import ProviderCard from "@/components/member/ProviderCard";
 import BookingModal from "@/components/member/BookingModal";
+import Icon from "@/components/member/Icon";
 
 export default function ProvidersPage() {
   const { providers, member } = useMember();
@@ -104,7 +105,7 @@ export default function ProvidersPage() {
 
       {results.length === 0 ? (
         <div className="empty">
-          <div className="em-ic">🔍</div>
+          <div className="em-ic"><Icon name="compass" size={30} /></div>
           <p>No providers match your filters. Try widening your search.</p>
         </div>
       ) : (

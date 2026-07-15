@@ -3,10 +3,17 @@
 import Link from "next/link";
 import type { Provider } from "@/lib/member/types";
 import { initials } from "@/lib/member/providers";
+import Icon from "@/components/member/Icon";
 
-function stars(q: number) {
+function Stars({ q }: { q: number }) {
   const full = Math.round(q);
-  return "★".repeat(full) + "☆".repeat(5 - full);
+  return (
+    <span className="stars" style={{ display: "inline-flex", gap: 1 }}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Icon key={i} name={i < full ? "starFilled" : "star"} size={13} strokeWidth={1.5} />
+      ))}
+    </span>
+  );
 }
 
 export default function ProviderCard({
@@ -28,7 +35,9 @@ export default function ProviderCard({
           <div className="prov-spec">{p.specialty}</div>
           <div style={{ marginTop: 6, display: "flex", gap: 6, flexWrap: "wrap" }}>
             {p.inNetwork ? (
-              <span className="mp-badge b-green">✓ In-Network</span>
+              <span className="mp-badge b-green">
+                <Icon name="check" size={13} strokeWidth={2.4} /> In-Network
+              </span>
             ) : (
               <span className="mp-badge b-red">Out-of-Network</span>
             )}
@@ -42,11 +51,22 @@ export default function ProviderCard({
       </div>
 
       <div className="prov-meta">
-        <div>📍 {[p.facility, `${p.city}, ${p.state} ${p.zip}`].filter(Boolean).join(" · ")}</div>
-        {p.distanceMi != null && <div>🚗 {p.distanceMi} mi away</div>}
-        <div>📞 {p.phone}</div>
         <div>
-          <span className="stars">{stars(p.quality)}</span>
+          <Icon name="pin" size={15} />
+          {[p.facility, `${p.city}, ${p.state} ${p.zip}`].filter(Boolean).join(" · ")}
+        </div>
+        {p.distanceMi != null && (
+          <div>
+            <Icon name="car" size={15} />
+            {p.distanceMi} mi away
+          </div>
+        )}
+        <div>
+          <Icon name="phone" size={15} />
+          {p.phone}
+        </div>
+        <div style={{ alignItems: "center" }}>
+          <Stars q={p.quality} />
           <span style={{ marginLeft: 6 }}>{p.quality.toFixed(1)} quality score</span>
         </div>
       </div>
@@ -59,7 +79,6 @@ export default function ProviderCard({
           <button
             className="mp-btn primary sm"
             style={{ flex: 1 }}
-            disabled={!p.inNetwork && false}
             onClick={() => onBook(p)}
           >
             {bookLabel}

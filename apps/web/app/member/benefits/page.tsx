@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMember } from "@/lib/member/store";
 import { usd } from "@/lib/member/format";
+import Icon from "@/components/member/Icon";
 
 const SUPPORT_TEL = "1-800-786-648";
 
@@ -15,7 +16,7 @@ export default function BenefitsPage() {
 
   const items: { key: string; title: string; icon: string; body: React.ReactNode }[] = [
     {
-      key: "deductible", title: "Deductible", icon: "🎯",
+      key: "deductible", title: "Deductible", icon: "compass",
       body: (
         <>
           The amount you pay for covered services before your plan starts sharing costs. Your deductible is{" "}
@@ -25,7 +26,7 @@ export default function BenefitsPage() {
       ),
     },
     {
-      key: "copay", title: "Copay", icon: "💵",
+      key: "copay", title: "Copay", icon: "receipt",
       body: (
         <>
           A fixed amount you pay for a visit. On your plan: <b>${plan.pcpCopay}</b> for primary care,{" "}
@@ -35,7 +36,7 @@ export default function BenefitsPage() {
       ),
     },
     {
-      key: "coinsurance", title: "Coinsurance", icon: "📊",
+      key: "coinsurance", title: "Coinsurance", icon: "pulse",
       body: (
         <>
           After you meet your deductible, you pay a percentage of covered costs and your plan pays the rest.
@@ -44,7 +45,7 @@ export default function BenefitsPage() {
       ),
     },
     {
-      key: "oop", title: "Out-of-Pocket Maximum", icon: "🛡️",
+      key: "oop", title: "Out-of-Pocket Maximum", icon: "shield",
       body: (
         <>
           The most you&apos;ll pay in a year for covered in-network care. Once you hit{" "}
@@ -54,7 +55,7 @@ export default function BenefitsPage() {
       ),
     },
     {
-      key: "covered", title: "Covered Services", icon: "✅",
+      key: "covered", title: "Covered Services", icon: "checkCircle",
       body: (
         <>
           Your plan covers doctor visits, specialists, urgent care, lab tests, imaging, prescriptions,
@@ -64,7 +65,7 @@ export default function BenefitsPage() {
       ),
     },
     {
-      key: "preventive", title: "Preventive Care", icon: "🌱",
+      key: "preventive", title: "Preventive Care", icon: "heart",
       body: (
         <>
           Preventive services — annual wellness visits, recommended screenings, and immunizations — are
@@ -74,7 +75,7 @@ export default function BenefitsPage() {
       ),
     },
     {
-      key: "emergency", title: "Emergency Coverage", icon: "🚨",
+      key: "emergency", title: "Emergency Coverage", icon: "ambulance",
       body: (
         <>
           For a true emergency, go to the nearest ER or call 911 — you&apos;re covered even out of network.
@@ -103,7 +104,7 @@ export default function BenefitsPage() {
                   cursor: "pointer", textAlign: "left", font: "inherit",
                 }}
               >
-                <span style={{ fontSize: 22 }}>{it.icon}</span>
+                <span style={{ display: "inline-flex" }}><Icon name={it.icon} size={22} /></span>
                 <span style={{ fontWeight: 700, fontSize: 16, flex: 1 }}>{it.title}</span>
                 <span style={{ color: "var(--muted)" }}>{isOpen ? "▲" : "▼"}</span>
               </button>
@@ -118,7 +119,7 @@ export default function BenefitsPage() {
       </div>
 
       <div className="help-cta" style={{ marginTop: 22 }}>
-        <div style={{ fontSize: 34 }}>📞</div>
+        <div style={{ fontSize: 34 }}><Icon name="phone" size={34} /></div>
         <div style={{ flex: 1 }}>
           <b>Still have questions about your coverage?</b>
           <div style={{ color: "var(--muted)", fontSize: 13.5 }}>

@@ -5,13 +5,14 @@ import { useState } from "react";
 import { useMember } from "@/lib/member/store";
 import { usd, dateLabel, relTime } from "@/lib/member/format";
 import StatusBadge from "@/components/member/StatusBadge";
+import Icon from "@/components/member/Icon";
 
 const QUICK = [
-  { href: "/member/find-care", icon: "🧭", label: "Find Care" },
-  { href: "/member/providers", icon: "🩺", label: "Find Provider" },
-  { href: "/member/upload-bill", icon: "📄", label: "Upload Bill" },
-  { href: "/member/virtual-care", icon: "💻", label: "Virtual Care" },
-  { href: "/member/claims", icon: "📋", label: "View Claims" },
+  { href: "/member/find-care", icon: "compass", label: "Find Care" },
+  { href: "/member/providers", icon: "stethoscope", label: "Find Provider" },
+  { href: "/member/upload-bill", icon: "file", label: "Upload Bill" },
+  { href: "/member/virtual-care", icon: "monitor", label: "Virtual Care" },
+  { href: "/member/claims", icon: "clipboard", label: "View Claims" },
 ];
 
 function Bar({ met, max }: { met: number; max: number }) {
@@ -89,7 +90,9 @@ export default function MemberDashboard() {
           <div className="flipwrap">
             <div className={"flipcard" + (flipped ? " flipped" : "")} onClick={() => setFlipped((f) => !f)}>
               <div className="flipface front">
-                <div className="ic-brand">✚ SummitBridge Health Plan</div>
+                <div className="ic-brand" style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                  <Icon name="cross" size={16} /> SummitBridge Health Plan
+                </div>
                 <div className="ic-row" style={{ marginTop: 18 }}>
                   <div>
                     <div className="ic-k">Member</div>
@@ -147,7 +150,7 @@ export default function MemberDashboard() {
               </div>
             </div>
           </div>
-          <div className="flip-hint">🔄 Front / Back</div>
+          <div className="flip-hint">Tap the card to flip · Front / Back</div>
         </div>
       </div>
 
@@ -156,7 +159,7 @@ export default function MemberDashboard() {
       <div className="qa-grid">
         {QUICK.map((q) => (
           <Link key={q.href} href={q.href} className="qa">
-            <div className="qa-ic">{q.icon}</div>
+            <div className="qa-ic"><Icon name={q.icon} size={22} /></div>
             <div className="qa-lbl">{q.label}</div>
           </Link>
         ))}
@@ -169,14 +172,14 @@ export default function MemberDashboard() {
           <div className="card-sub">{upcoming.length} scheduled</div>
           {upcoming.length === 0 ? (
             <div className="empty">
-              <div className="em-ic">📅</div>
+              <div className="em-ic"><Icon name="calendar" size={40} /></div>
               <p>No upcoming appointments.</p>
               <Link href="/member/find-care" className="mp-btn primary sm">Find care</Link>
             </div>
           ) : (
             upcoming.slice(0, 4).map((a) => (
               <div key={a.id} className="row-item">
-                <div className="r-ic">{a.type === "virtual" ? "💻" : "🩺"}</div>
+                <div className="r-ic"><Icon name={a.type === "virtual" ? "monitor" : "stethoscope"} /></div>
                 <div className="r-main">
                   <div className="r-title">{a.providerName}</div>
                   <div className="r-sub">{a.whenLabel}</div>
@@ -194,7 +197,7 @@ export default function MemberDashboard() {
           <div className="card-sub">Latest activity</div>
           {claims.slice(0, 4).map((c) => (
             <Link key={c.id} href={`/member/claims/${c.id}`} className="row-item" style={{ cursor: "pointer" }}>
-              <div className="r-ic">🧾</div>
+              <div className="r-ic"><Icon name="receipt" /></div>
               <div className="r-main">
                 <div className="r-title">{c.provider}</div>
                 <div className="r-sub">{dateLabel(c.serviceDate)} · {usd(c.memberResp)} you owe</div>
@@ -213,7 +216,7 @@ export default function MemberDashboard() {
           {notifications.slice(0, 4).map((n) => (
             <div key={n.id} className="row-item">
               <div className="r-ic">
-                {n.kind === "reminder" ? "⏰" : n.kind === "claim" ? "📋" : n.kind === "bill" ? "📄" : n.kind === "virtual" ? "💻" : "✅"}
+                <Icon name={n.kind === "reminder" ? "clock" : n.kind === "claim" ? "clipboard" : n.kind === "bill" ? "file" : n.kind === "virtual" ? "monitor" : "checkCircle"} />
               </div>
               <div className="r-main">
                 <div className="r-title" style={{ fontSize: 13.5 }}>{n.title}</div>

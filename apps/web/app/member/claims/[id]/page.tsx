@@ -7,6 +7,7 @@ import { useMember } from "@/lib/member/store";
 import { usd, dateLabel } from "@/lib/member/format";
 import type { ClaimStatus } from "@/lib/member/types";
 import StatusBadge from "@/components/member/StatusBadge";
+import Icon from "@/components/member/Icon";
 
 const FLOW: ClaimStatus[] = ["Submitted", "Processing", "Approved", "Paid"];
 
@@ -21,9 +22,9 @@ export default function ClaimDetailPage() {
   if (!claim) {
     return (
       <>
-        <Link href="/member/claims" className="mp-btn ghost sm">← Back to claims</Link>
+        <Link href="/member/claims" className="mp-btn ghost sm" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name="arrowLeft" size={15} /> Back to claims</Link>
         <div className="empty">
-          <div className="em-ic">🤷</div>
+          <div className="em-ic"><Icon name="info" size={30} /></div>
           <p>We couldn&apos;t find that claim.</p>
           <Link href="/member/claims" className="mp-btn primary sm">View all claims</Link>
         </div>
@@ -42,8 +43,8 @@ export default function ClaimDetailPage() {
 
   return (
     <>
-      <Link href="/member/claims" className="mp-btn ghost sm" style={{ marginBottom: 12 }}>
-        ← Back to claims
+      <Link href="/member/claims" className="mp-btn ghost sm" style={{ marginBottom: 12, display: "inline-flex", alignItems: "center", gap: 6 }}>
+        <Icon name="arrowLeft" size={15} /> Back to claims
       </Link>
 
       <div className="mp-card">
@@ -97,14 +98,14 @@ export default function ClaimDetailPage() {
         {rejected ? (
           <div className="timeline" style={{ marginTop: 8 }}>
             <div className="tl-item">
-              <div className="tl-dot done">✓</div>
+              <div className="tl-dot done"><Icon name="check" size={13} /></div>
               <div>
                 <div style={{ fontWeight: 700 }}>Submitted</div>
                 <div style={{ fontSize: 13, color: "var(--muted)" }}>Claim received.</div>
               </div>
             </div>
             <div className="tl-item">
-              <div className="tl-dot" style={{ background: "var(--red)" }}>✕</div>
+              <div className="tl-dot" style={{ background: "var(--red)" }}><Icon name="cross" size={13} /></div>
               <div>
                 <div style={{ fontWeight: 700, color: "var(--red)" }}>Rejected</div>
                 <div style={{ fontSize: 13, color: "var(--muted)" }}>
@@ -119,7 +120,7 @@ export default function ClaimDetailPage() {
               const s = stepState(i);
               return (
                 <div key={step} className="tl-item">
-                  <div className={"tl-dot " + s}>{s === "done" ? "✓" : s === "active" ? "•" : ""}</div>
+                  <div className={"tl-dot " + s}>{s === "done" ? <Icon name="check" size={13} /> : s === "active" ? "•" : ""}</div>
                   <div>
                     <div style={{ fontWeight: 700 }}>{step}</div>
                     <div style={{ fontSize: 13, color: "var(--muted)" }}>

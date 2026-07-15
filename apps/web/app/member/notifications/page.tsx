@@ -3,14 +3,15 @@
 import { useMember } from "@/lib/member/store";
 import { relTime, dateLabel } from "@/lib/member/format";
 import type { NotificationKind } from "@/lib/member/types";
+import Icon from "@/components/member/Icon";
 
 const ICON: Record<NotificationKind, string> = {
-  appointment: "📅",
-  confirmation: "✅",
-  claim: "📋",
-  bill: "📄",
-  reminder: "⏰",
-  virtual: "💻",
+  appointment: "calendar",
+  confirmation: "checkCircle",
+  claim: "clipboard",
+  bill: "file",
+  reminder: "clock",
+  virtual: "monitor",
 };
 
 export default function NotificationsPage() {
@@ -30,7 +31,7 @@ export default function NotificationsPage() {
 
       {notifications.length === 0 ? (
         <div className="empty">
-          <div className="em-ic">🔔</div>
+          <div className="em-ic"><Icon name="bell" size={30} /></div>
           <p>No notifications yet.</p>
         </div>
       ) : (
@@ -42,7 +43,7 @@ export default function NotificationsPage() {
               style={{ cursor: n.read ? "default" : "pointer", opacity: n.read ? 0.7 : 1 }}
               onClick={() => { if (!n.read) markRead(n.id); }}
             >
-              <div className="r-ic">{ICON[n.kind]}</div>
+              <div className="r-ic"><Icon name={ICON[n.kind] ?? "bell"} size={20} /></div>
               <div className="r-main">
                 <div className="r-title">{n.title}</div>
                 <div className="r-sub">{n.body}</div>

@@ -1,0 +1,13 @@
+{
+  "name": "summitbridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SummitBridge Health Plan — CEO analytics dashboard + member portal. The Next.js app lives in apps/web.",
+  "scripts": {
+    "dev": "npm --prefix apps/web run dev",
+    "build": "npm --prefix apps/web run build",
+    "start": "npm --prefix apps/web run start",
+    "install:web": "npm --prefix apps/web install",
+    "setup": "npm --prefix apps/web install && npm run dev"
+  }
+}

@@ -139,7 +139,7 @@ export function MemberProvider({ children }: { children: React.ReactNode }) {
       title: p.type === "virtual" ? "Virtual visit booked" : "Appointment confirmed",
       body: `${p.type === "virtual" ? "Video visit" : "Visit"} with ${p.providerName} · ${p.whenLabel}.`,
     });
-    toast(`✅ ${p.type === "virtual" ? "Virtual visit" : "Appointment"} booked with ${p.providerName}`);
+    toast(`${p.type === "virtual" ? "Virtual visit" : "Appointment"} booked with ${p.providerName}`);
   }, [pushNotif, toast]);
 
   const addFollowUp: Ctx["addFollowUp"] = useCallback((setting) => {
@@ -201,7 +201,7 @@ export function MemberProvider({ children }: { children: React.ReactNode }) {
         }, ...s.notifs],
       };
     });
-    toast("📄 Bill uploaded — added to your claims");
+    toast("Bill uploaded — added to your claims");
     return summary;
   }, [basePlan, st.planPatch, toast]);
 
@@ -213,7 +213,7 @@ export function MemberProvider({ children }: { children: React.ReactNode }) {
   }, []);
   const updateProfile = useCallback((patch: Partial<MemberInfo>) => {
     setSt((s) => ({ ...s, profilePatch: { ...s.profilePatch, ...patch } }));
-    toast("✅ Profile updated");
+    toast("Profile updated");
   }, [toast]);
 
   const ready = loaded && !!baseMember && !!basePlan;

@@ -6,6 +6,7 @@ import { useMember } from "@/lib/member/store";
 import { usd, dateLabel } from "@/lib/member/format";
 import type { ClaimStatus } from "@/lib/member/types";
 import StatusBadge from "@/components/member/StatusBadge";
+import Icon from "@/components/member/Icon";
 
 const STATUSES: (ClaimStatus | "All")[] = ["All", "Submitted", "Processing", "Approved", "Paid", "Rejected"];
 
@@ -55,14 +56,14 @@ export default function ClaimsPage() {
 
       {filtered.length === 0 ? (
         <div className="empty">
-          <div className="em-ic">📋</div>
+          <div className="em-ic"><Icon name="clipboard" size={30} /></div>
           <p>No claims with this status.</p>
         </div>
       ) : (
         <div className="mp-card">
           {filtered.map((c) => (
             <Link key={c.id} href={`/member/claims/${c.id}`} className="row-item" style={{ cursor: "pointer" }}>
-              <div className="r-ic">🧾</div>
+              <div className="r-ic"><Icon name="receipt" size={20} /></div>
               <div className="r-main">
                 <div className="r-title">{c.provider}</div>
                 <div className="r-sub">

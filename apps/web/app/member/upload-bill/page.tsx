@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { useMember } from "@/lib/member/store";
 import { usd } from "@/lib/member/format";
 import type { CoverageSummary } from "@/lib/member/store";
+import Icon from "@/components/member/Icon";
 
 export default function UploadBillPage() {
   const { uploadBill } = useMember();
@@ -45,7 +46,7 @@ export default function UploadBillPage() {
   if (summary) {
     return (
       <>
-        <h1 className="page-title">Bill received 🎉</h1>
+        <h1 className="page-title">Bill received</h1>
         <p className="page-sub">We&apos;ve added this to your claims and estimated your coverage.</p>
 
         <div className="mp-card" style={{ maxWidth: 640 }}>
@@ -102,7 +103,7 @@ export default function UploadBillPage() {
             takeFile(e.dataTransfer.files?.[0]);
           }}
         >
-          <div className="dz-ic">📄</div>
+          <div className="dz-ic"><Icon name="upload" size={30} /></div>
           <div style={{ fontWeight: 700, marginTop: 6 }}>
             {fileName ? fileName : "Drag & drop your bill here"}
           </div>

@@ -2,18 +2,18 @@ import type { CareRecommendation, CareSetting, Plan } from "./types";
 
 /** Symptom catalogue shown as quick-pick tiles on the Care Guidance page. */
 export const SYMPTOMS: { key: string; label: string; icon: string }[] = [
-  { key: "fever", label: "Fever", icon: "🌡️" },
-  { key: "cold", label: "Cold / Flu", icon: "🤧" },
-  { key: "headache", label: "Headache", icon: "🤕" },
-  { key: "back_pain", label: "Back Pain", icon: "🦴" },
-  { key: "stomach_pain", label: "Stomach Pain", icon: "🤢" },
-  { key: "rash", label: "Rash", icon: "🩹" },
-  { key: "injury", label: "Injury", icon: "🩼" },
-  { key: "medication_refill", label: "Medication Refill", icon: "💊" },
-  { key: "sore_throat", label: "Sore Throat", icon: "😷" },
-  { key: "pink_eye", label: "Pink Eye", icon: "👁️" },
-  { key: "chest_pain", label: "Chest Pain", icon: "❤️‍🩹" },
-  { key: "breathing", label: "Trouble Breathing", icon: "🫁" },
+  { key: "fever", label: "Fever", icon: "thermometer" },
+  { key: "cold", label: "Cold / Flu", icon: "droplet" },
+  { key: "headache", label: "Headache", icon: "pulse" },
+  { key: "back_pain", label: "Back Pain", icon: "pulse" },
+  { key: "stomach_pain", label: "Stomach Pain", icon: "pulse" },
+  { key: "rash", label: "Rash", icon: "bandage" },
+  { key: "injury", label: "Injury", icon: "bandage" },
+  { key: "medication_refill", label: "Medication Refill", icon: "pill" },
+  { key: "sore_throat", label: "Sore Throat", icon: "pulse" },
+  { key: "pink_eye", label: "Pink Eye", icon: "eye" },
+  { key: "chest_pain", label: "Chest Pain", icon: "heart" },
+  { key: "breathing", label: "Trouble Breathing", icon: "pulse" },
 ];
 
 type Rule = Omit<CareRecommendation, "symptom" | "costLabel"> & { match: string[] };
