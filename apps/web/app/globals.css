@@ -72,12 +72,44 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ---------- Filter bar ---------- */
 .filterbar {
-  position: sticky; top: 0; z-index: 30;
+  position: static;
   background: var(--white);
   border-bottom: 1px solid var(--line);
   box-shadow: var(--shadow);
   padding: 12px 28px;
 }
+/* compact dropdown filter row */
+.filter-compact { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.filter-compact .result-note { margin-left: auto; }
+.fdrop { position: relative; }
+.fdrop-btn {
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  border: 1px solid var(--grey-200); background: #fff; border-radius: 9px;
+  padding: 8px 12px; font-size: 12.5px; font-weight: 600; color: var(--grey-900); cursor: pointer;
+}
+.fdrop-btn:hover { border-color: var(--blue); }
+.fdrop-btn.has { border-color: var(--navy); background: #f5f8ff; }
+.fdrop-btn .fd-label { color: var(--grey-400); font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: .4px; }
+.fdrop-btn .fd-val { color: var(--navy); font-weight: 700; }
+.fdrop-btn.has .fd-val { color: var(--blue); }
+.fdrop-btn .fd-caret { color: var(--grey-400); font-size: 10px; }
+.fdrop-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; min-width: 190px; max-height: 320px; overflow-y: auto;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow-lg); padding: 6px;
+}
+.fdrop-opt {
+  display: flex; align-items: center; gap: 9px; width: 100%; text-align: left;
+  border: 0; background: transparent; border-radius: 7px; padding: 8px 9px; font-size: 13px; font-weight: 600; color: var(--grey-900); cursor: pointer;
+}
+.fdrop-opt:hover { background: var(--grey-50); }
+.fdrop-opt.on { color: var(--blue); }
+.fdrop-opt .cbx {
+  width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--grey-200); display: grid; place-items: center;
+  font-size: 11px; color: #fff; flex-shrink: 0;
+}
+.fdrop-opt.on .cbx { background: var(--blue); border-color: var(--blue); }
+.fdrop-clear { width: 100%; margin-top: 4px; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--grey-600); font-size: 12px; font-weight: 700; padding: 8px; cursor: pointer; border-radius: 0 0 7px 7px; }
+.fdrop-clear:hover { color: var(--neg); }
 .filter-row { display: flex; flex-wrap: wrap; gap: 18px 26px; align-items: flex-start; }
 .fgroup { display: flex; flex-direction: column; gap: 6px; }
 .fgroup > label {
@@ -222,7 +254,7 @@ footer b { color: var(--grey-600); }
 .ceo-side-foot a { color: rgba(255,255,255,.72); font-size: 12px; font-weight: 600; text-decoration: none; display: block; padding: 9px 10px; border: 1px solid rgba(255,255,255,.16); border-radius: 8px; text-align: center; }
 .ceo-side-foot a:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
 .ceo-main { flex: 1; min-width: 0; }
-.sec-anchor { scroll-margin-top: 128px; }
+.sec-anchor { scroll-margin-top: 24px; }
 
 /* ---------- Members needing attention table ---------- */
 .attn-head { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }

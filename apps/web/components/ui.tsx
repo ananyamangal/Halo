@@ -91,6 +91,81 @@ export function FilterGroup({
   );
 }
 
+// Compact multi-select dropdown filter
+export function FilterSelect({
+  label,
+  values,
+  active,
+  onToggle,
+  labelFn,
+}: {
+  label: string;
+  values: string[];
+  active: Set<string>;
+  onToggle: (v: string) => void;
+  labelFn?: (v: string) => string;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (!open) return;
+    function onDoc(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  const count = active.size;
+  const first = [...active][0];
+  const summary =
+    count === 0
+      ? "All"
+      : count === 1 && first
+        ? labelFn
+          ? labelFn(first)
+          : first
+        : `${count} selected`;
+
+  return (
+    <div className="fdrop" ref={ref}>
+      <button
+        className={"fdrop-btn" + (count ? " has" : "")}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span className="fd-label">{label}</span>
+        <span className="fd-val">{summary}</span>
+        <span className="fd-caret">▾</span>
+      </button>
+      {open && (
+        <div className="fdrop-menu">
+          {values.map((v) => {
+            const on = active.has(v);
+            return (
+              <button
+                key={v}
+                className={"fdrop-opt" + (on ? " on" : "")}
+                onClick={() => onToggle(v)}
+              >
+                <span className="cbx">{on ? "✓" : ""}</span>
+                {labelFn ? labelFn(v) : v}
+              </button>
+            );
+          })}
+          {count > 0 && (
+            <button
+              className="fdrop-clear"
+              onClick={() => [...active].forEach((v) => onToggle(v))}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Section heading (tag 01-06 + rule)
 export function Section({ tag, children }: { tag: string; children: React.ReactNode }) {
   return (

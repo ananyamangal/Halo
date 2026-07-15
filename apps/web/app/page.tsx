@@ -5,8 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import Chart from "@/components/Chart";
 import {
   KpiCard,
-  FilterGroup,
-  Pill,
+  FilterSelect,
   Section,
   Card,
 } from "@/components/ui";
@@ -297,83 +296,67 @@ export default function Page() {
       </header>
 
       <div className="filterbar">
-        <div className="filter-row">
-          <FilterGroup
-            label="Product line (LOB)"
+        <div className="filter-compact">
+          <FilterSelect
+            label="Product line"
             values={M.lobs}
             active={filters.lob}
             onToggle={(v) => toggleSet("lob", v)}
-            blue
           />
-          <FilterGroup
+          <FilterSelect
             label="State"
             values={M.states}
             active={filters.state}
             onToggle={(v) => toggleSet("state", v)}
           />
-          <FilterGroup
+          <FilterSelect
             label="Age band"
             values={M.age_bands}
             active={filters.age}
             onToggle={(v) => toggleSet("age", v)}
           />
-          <FilterGroup
-            label="Service category"
+          <FilterSelect
+            label="Category"
             values={M.cats}
             active={filters.cat}
             onToggle={(v) => toggleSet("cat", v)}
           />
-          <FilterGroup
+          <FilterSelect
             label="Network"
             values={["Y", "N"]}
             active={filters.net}
             onToggle={(v) => toggleSet("net", v)}
             labelFn={(v) => (v === "Y" ? "In-network" : "Out-of-network")}
           />
-          <div className="fgroup">
-            <label>Cohort</label>
-            <div className="pills">
-              <button
-                className={
-                  "toggle" + (filters.highCost ? " on active" : "")
-                }
-                onClick={toggleHighCost}
-              >
-                <span className="dot"></span> High-cost (top 5%) only
-              </button>
-            </div>
-          </div>
-          <div className="filter-actions">
-            <div
-              className="result-note"
-              dangerouslySetInnerHTML={{
-                __html:
-                  "<b>" +
-                  num(d.lines) +
-                  "</b> claims · <b>" +
-                  num(d.memberMonths) +
-                  "</b> member-months · <b>" +
-                  num(d.memberCount) +
-                  "</b> members",
-              }}
-            />
-            <button className="btn-reset" onClick={reset}>
-              Reset filters
-            </button>
-          </div>
-        </div>
-        <div className="fgroup" style={{ marginTop: 12 }}>
-          <label>Month (FY2024) — click to isolate, click again to clear</label>
-          <div className="pills">
-            {M.months.map((m) => (
-              <Pill
-                key={m}
-                label={mlbl(m)}
-                active={filters.months.has(m)}
-                onClick={() => toggleSet("months", m)}
-              />
-            ))}
-          </div>
+          <FilterSelect
+            label="Month"
+            values={M.months}
+            active={filters.months}
+            onToggle={(v) => toggleSet("months", v)}
+            labelFn={mlbl}
+          />
+          <button
+            className={"toggle" + (filters.highCost ? " on active" : "")}
+            onClick={toggleHighCost}
+          >
+            <span className="dot"></span> High-cost only
+          </button>
+          <button className="btn-reset" onClick={reset}>
+            Reset
+          </button>
+          <div
+            className="result-note"
+            dangerouslySetInnerHTML={{
+              __html:
+                "<b>" +
+                num(d.lines) +
+                "</b> claims · <b>" +
+                num(d.memberMonths) +
+                "</b> MM · <b>" +
+                num(d.memberCount) +
+                "</b> members",
+            }}
+          />
         </div>
       </div>
 
